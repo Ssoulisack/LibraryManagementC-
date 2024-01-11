@@ -198,10 +198,10 @@
             this.bookIssue_searchBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bookIssue_searchBtn.Font = new System.Drawing.Font("Arial Narrow", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bookIssue_searchBtn.ForeColor = System.Drawing.Color.White;
-            this.bookIssue_searchBtn.Location = new System.Drawing.Point(834, 5);
+            this.bookIssue_searchBtn.Location = new System.Drawing.Point(834, 13);
             this.bookIssue_searchBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.bookIssue_searchBtn.Name = "bookIssue_searchBtn";
-            this.bookIssue_searchBtn.Size = new System.Drawing.Size(92, 37);
+            this.bookIssue_searchBtn.Size = new System.Drawing.Size(92, 32);
             this.bookIssue_searchBtn.TabIndex = 20;
             this.bookIssue_searchBtn.Text = "Search";
             this.bookIssue_searchBtn.UseVisualStyleBackColor = false;
@@ -418,7 +418,7 @@
             // txtbookid
             // 
             this.txtbookid.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtbookid.Location = new System.Drawing.Point(650, 11);
+            this.txtbookid.Location = new System.Drawing.Point(650, 13);
             this.txtbookid.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtbookid.Name = "txtbookid";
             this.txtbookid.Size = new System.Drawing.Size(176, 31);

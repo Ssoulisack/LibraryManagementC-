@@ -368,7 +368,6 @@ namespace libraryManagementFinal
                 try
                 {
                     conn.Open();
-                    string src = bookIssue_searchBtn.Text;
                     string BookID = txtbookid.Text;
 
                     cmd = new SqlCommand("SELECT * FROM books WHERE bID ="+BookID, conn);

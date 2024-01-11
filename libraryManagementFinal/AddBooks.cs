@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,8 +42,10 @@ namespace libraryManagementFinal
             addBooks_bookTitle.Text = "";
             addBooks_author.Text = "";
             txt_search.Text = "";
+            txtSearch.Text = "";
             addBooks_picture.Image = null;
             addBooks_status.SelectedIndex = -1;
+            cbcolumn.SelectedIndex = -1;
         }
         //Method Display
         public void displayBooks()
@@ -52,34 +56,6 @@ namespace libraryManagementFinal
             dataGridView1.DataSource = listData;
 
         }
-
-        //DataGridView
-        private int bookID = 0;
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex != -1)
-            {
-                DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
-                bookID = (int)row.Cells[0].Value;
-                addBooks_bookTitle.Text = row.Cells[1].Value.ToString();
-                addBooks_author.Text = row.Cells[2].Value.ToString();
-                addBooks_published.Text = row.Cells[3].Value.ToString();
-
-                string imagePath = row.Cells[4].Value.ToString();
-
-
-                if (imagePath != null || imagePath.Length >= 1)
-                {
-                    addBooks_picture.Image = Image.FromFile(imagePath);
-                }
-                else
-                {
-                    addBooks_picture.Image = null;
-                }
-                addBooks_status.Text = row.Cells[5].Value.ToString();
-            }
-        }
-        /*-------------------------------------->Button zone<--------------------------------------------------*/
         //Import Images
         private String imagePath;
         private void addBooks_importBtn_Click(object sender, EventArgs e)
@@ -101,6 +77,30 @@ namespace libraryManagementFinal
                 MessageBox.Show("Error: " + ex, "Error Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        //DataGridView
+        private int bookID = 0;
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                if (e.RowIndex >= -1 )
+                {
+                    DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+                    bookID = (int)row.Cells[0].Value;
+                    addBooks_bookTitle.Text = row.Cells[1].Value.ToString();
+                    addBooks_author.Text = row.Cells[2].Value.ToString();
+                    addBooks_published.Text = row.Cells[3].Value.ToString();
+                    string imagePath = row.Cells[4].Value as string; // Ensure imagePath is a string
+
+                    addBooks_status.Text = row.Cells[5].Value.ToString();
+                }
+            } catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex, "Error Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        /*-------------------------------------->Button zone<--------------------------------------------------*/
         //Button AddBooks
         private void addBooks_addBtn_Click(object sender, EventArgs e)
         {
@@ -168,12 +168,10 @@ namespace libraryManagementFinal
         //Button Update Book
         private void addBooks_updateBtn_Click(object sender, EventArgs e)
         {
-            if (addBooks_picture.Image == null
-                || addBooks_bookTitle.Text == ""
+            if (addBooks_bookTitle.Text == ""
                 || addBooks_author.Text == ""
                 || addBooks_published.Value == null
-                || addBooks_status.Text == ""
-                || addBooks_picture.Image == null)
+                || addBooks_status.Text == "")
             {
                 MessageBox.Show("Please select item first", "Error Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -230,12 +228,10 @@ namespace libraryManagementFinal
         //Button Delete
         private void addBooks_deleteBtn_Click(object sender, EventArgs e)
         {   
-            if (addBooks_picture.Image == null
-                || addBooks_bookTitle.Text == ""
+            if (addBooks_bookTitle.Text == ""
                 || addBooks_author.Text == ""
                 || addBooks_published.Value == null
-                || addBooks_status.Text == ""
-                || addBooks_picture.Image == null)
+                || addBooks_status.Text == "")
             {
                 MessageBox.Show("Please select item first", "Error Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -297,16 +293,105 @@ namespace libraryManagementFinal
             }
             else
             {
+                try
+                { 
                     string sql = "SELECT * FROM books WHERE bID = '"+txt_search.Text+"'";
                     conn.Open();
                     cmd = new SqlCommand(sql, conn);
                     dr = cmd.ExecuteReader();
-                    DataTable dt = new DataTable();
+                    if (dr.Read())
+                    { 
+                        addBooks_bookTitle.Text = dr["book_title"].ToString();
+                        addBooks_author.Text = dr["author"].ToString();
+                        addBooks_published.Text = dr["published_date"].ToString();
+                        string imagePath = dr["image"].ToString();
+                        if (imagePath != null)
+                        {
+                            addBooks_picture.Image = Image.FromFile(imagePath);
+                        }
+                        else
+                        {
+                            addBooks_picture.Image = null;
+                        }
+                        addBooks_status.Text = dr["status"].ToString();
+                    }
+                    else
+                    {
+                        MessageBox.Show("No Record found");
+                    }
+                    /*DataTable dt = new DataTable();
                     dt.Load(dr);
-                    dataGridView1.DataSource = dt;
+                    dataGridView1.DataSource = dt;*/
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex, "Error Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally {
+                
+                    conn.Close() ;
+                }
+            }
+        }
+        //Text Search For bookID, bookTitle, author 
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                conn.Open();
+                string src = txtSearch.Text;
 
-                    dr.Close();
-                    conn.Close();
+                string query = "SELECT * FROM books";
+                if (cbcolumn.SelectedIndex == 0)
+                {
+                    query += " WHERE book_title LIKE '%" + src + "%' OR author LIKE '%" + src + "%' ";
+                    if (int.TryParse(src, out _))
+                    {
+                        query += " OR bID = " + src;
+                    }
+
+                }
+                else
+                {
+                    if (cbcolumn.SelectedIndex == 1 && src.Length > 0)
+                    {
+                        // Check if the input is a valid integer for ID
+                        if (!int.TryParse(src, out _))
+                        {
+                            MessageBox.Show("Please enter a valid intege for ID.");
+                            conn.Close();
+                            return;
+                        }
+
+                        // Continue with the query for ID
+                        query += " WHERE bID = " + src;
+                    }
+                    else if (cbcolumn.SelectedIndex == 2)
+                    {
+                        query += " WHERE book_title LIKE '%" + src + "%' ";
+                    }
+                    else if (cbcolumn.SelectedIndex == 3)
+                    {
+                        query += " WHERE author LIKE '%" + src + "%' ";
+                    }
+
+                }
+
+                cmd = new SqlCommand(query, conn);
+                dr = cmd.ExecuteReader();
+                DataTable dt = new DataTable();
+                dt.Load(dr);
+                dataGridView1.DataSource = dt;
+                dr.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex, "Error Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                conn.Close();
+
             }
         }
     }

@@ -72,6 +72,11 @@
     <Compile Include="IssuseBooks.Designer.cs">
       <DependentUpon>IssuseBooks.cs</DependentUpon>
     </Compile>
+    <Compile Include="LibrarySystemDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LibrarySystemDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="loginForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -131,6 +136,17 @@
     <EmbeddedResource Include="ReturnBook.resx">
       <DependentUpon>ReturnBook.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="LibrarySystemDataSet.xsc">
+      <DependentUpon>LibrarySystemDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="LibrarySystemDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>LibrarySystemDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="LibrarySystemDataSet.xss">
+      <DependentUpon>LibrarySystemDataSet.xsd</DependentUpon>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

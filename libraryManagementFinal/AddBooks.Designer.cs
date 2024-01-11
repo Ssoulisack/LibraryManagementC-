@@ -28,9 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.SearchBtn = new System.Windows.Forms.Button();
+            this.txt_search = new System.Windows.Forms.TextBox();
             this.addBooks_importBtn = new System.Windows.Forms.Button();
             this.addBooks_clearBtn = new System.Windows.Forms.Button();
             this.addBooks_deleteBtn = new System.Windows.Forms.Button();
@@ -48,12 +51,20 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.txt_search = new System.Windows.Forms.TextBox();
-            this.SearchBtn = new System.Windows.Forms.Button();
+            this.txtSearch = new System.Windows.Forms.TextBox();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cbcolumn = new System.Windows.Forms.ComboBox();
+            this.librarySystemDataSet = new libraryManagementFinal.LibrarySystemDataSet();
+            this.librarySystemDataSetBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.booksBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.booksTableAdapter = new libraryManagementFinal.LibrarySystemDataSetTableAdapters.booksTableAdapter();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.addBooks_picture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.librarySystemDataSet)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.librarySystemDataSetBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.booksBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -81,6 +92,32 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(435, 693);
             this.panel1.TabIndex = 3;
+            // 
+            // SearchBtn
+            // 
+            this.SearchBtn.BackColor = System.Drawing.Color.Black;
+            this.SearchBtn.FlatAppearance.BorderSize = 0;
+            this.SearchBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SearchBtn.Font = new System.Drawing.Font("Arial Narrow", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SearchBtn.ForeColor = System.Drawing.Color.White;
+            this.SearchBtn.Location = new System.Drawing.Point(311, 236);
+            this.SearchBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.SearchBtn.Name = "SearchBtn";
+            this.SearchBtn.Size = new System.Drawing.Size(96, 35);
+            this.SearchBtn.TabIndex = 25;
+            this.SearchBtn.Text = "Search";
+            this.SearchBtn.UseVisualStyleBackColor = false;
+            this.SearchBtn.Click += new System.EventHandler(this.SearchBtn_Click);
+            // 
+            // txt_search
+            // 
+            this.txt_search.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txt_search.Location = new System.Drawing.Point(133, 236);
+            this.txt_search.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txt_search.Multiline = true;
+            this.txt_search.Name = "txt_search";
+            this.txt_search.Size = new System.Drawing.Size(170, 35);
+            this.txt_search.TabIndex = 24;
             // 
             // addBooks_importBtn
             // 
@@ -307,7 +344,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(11, 28);
+            this.label1.Location = new System.Drawing.Point(11, 0);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(224, 35);
@@ -318,6 +355,8 @@
             // 
             this.panel2.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.cbcolumn);
+            this.panel2.Controls.Add(this.txtSearch);
             this.panel2.Controls.Add(this.dataGridView1);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Location = new System.Drawing.Point(454, 18);
@@ -326,31 +365,52 @@
             this.panel2.Size = new System.Drawing.Size(482, 693);
             this.panel2.TabIndex = 4;
             // 
-            // txt_search
+            // txtSearch
             // 
-            this.txt_search.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txt_search.Location = new System.Drawing.Point(133, 236);
-            this.txt_search.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txt_search.Multiline = true;
-            this.txt_search.Name = "txt_search";
-            this.txt_search.Size = new System.Drawing.Size(170, 35);
-            this.txt_search.TabIndex = 24;
+            this.txtSearch.Location = new System.Drawing.Point(177, 36);
+            this.txtSearch.Multiline = true;
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Size = new System.Drawing.Size(285, 28);
+            this.txtSearch.TabIndex = 2;
+            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             // 
-            // SearchBtn
+            // contextMenuStrip1
             // 
-            this.SearchBtn.BackColor = System.Drawing.Color.Black;
-            this.SearchBtn.FlatAppearance.BorderSize = 0;
-            this.SearchBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SearchBtn.Font = new System.Drawing.Font("Arial Narrow", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SearchBtn.ForeColor = System.Drawing.Color.White;
-            this.SearchBtn.Location = new System.Drawing.Point(311, 236);
-            this.SearchBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.SearchBtn.Name = "SearchBtn";
-            this.SearchBtn.Size = new System.Drawing.Size(96, 35);
-            this.SearchBtn.TabIndex = 25;
-            this.SearchBtn.Text = "Search";
-            this.SearchBtn.UseVisualStyleBackColor = false;
-            this.SearchBtn.Click += new System.EventHandler(this.SearchBtn_Click);
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            // 
+            // cbcolumn
+            // 
+            this.cbcolumn.FormattingEnabled = true;
+            this.cbcolumn.Items.AddRange(new object[] {
+            "All",
+            "ID ",
+            "bookTitle",
+            "Author"});
+            this.cbcolumn.Location = new System.Drawing.Point(17, 36);
+            this.cbcolumn.Name = "cbcolumn";
+            this.cbcolumn.Size = new System.Drawing.Size(154, 28);
+            this.cbcolumn.TabIndex = 6;
+            // 
+            // librarySystemDataSet
+            // 
+            this.librarySystemDataSet.DataSetName = "LibrarySystemDataSet";
+            this.librarySystemDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // librarySystemDataSetBindingSource
+            // 
+            this.librarySystemDataSetBindingSource.DataSource = this.librarySystemDataSet;
+            this.librarySystemDataSetBindingSource.Position = 0;
+            // 
+            // booksBindingSource
+            // 
+            this.booksBindingSource.DataMember = "books";
+            this.booksBindingSource.DataSource = this.librarySystemDataSetBindingSource;
+            // 
+            // booksTableAdapter
+            // 
+            this.booksTableAdapter.ClearBeforeFill = true;
             // 
             // AddBooks
             // 
@@ -367,6 +427,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.librarySystemDataSet)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.librarySystemDataSetBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.booksBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -393,5 +456,12 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Button SearchBtn;
         private System.Windows.Forms.TextBox txt_search;
+        private System.Windows.Forms.TextBox txtSearch;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ComboBox cbcolumn;
+        private System.Windows.Forms.BindingSource booksBindingSource;
+        private System.Windows.Forms.BindingSource librarySystemDataSetBindingSource;
+        private LibrarySystemDataSet librarySystemDataSet;
+        private LibrarySystemDataSetTableAdapters.booksTableAdapter booksTableAdapter;
     }
 }
